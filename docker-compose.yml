@@ -8,10 +8,7 @@ services:
     
     # Port mapping 
     ports:
-      - "8056:80"
-    # Security options
-    security_opt:
-      - no-new-privileges:true
+      - "8488:80"
 
 networks:
   default:
