@@ -1,0 +1,19 @@
+services:
+  padel-website:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: padel-website
+    restart: unless-stopped
+    
+    # Port mapping 
+    ports:
+      - "8056:80"
+    # Security options
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  default:
+    name: padel-network
+    driver: bridge
