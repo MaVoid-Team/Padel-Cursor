@@ -1,0 +1,16 @@
+services:
+  padel-website:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: padel-website
+    restart: unless-stopped
+    
+    # Port mapping 
+    ports:
+      - "8418:80"
+
+networks:
+  default:
+    name: padel-network
+    driver: bridge
