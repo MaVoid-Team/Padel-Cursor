@@ -33,6 +33,7 @@ class CourtBookingSystem {
         this.setupDatePicker();
         this.setupEventListeners();
         this.renderDatePicker();
+        this.loadExistingBookings();
     }
     
     setupDatePicker() {
@@ -75,7 +76,9 @@ class CourtBookingSystem {
         if (finalForm) {
             finalForm.addEventListener('submit', (e) => {
                 e.preventDefault();
-                this.processBooking();
+                if (this.validateBookingForm()) {
+                    this.processBooking();
+                }
             });
         }
         
@@ -84,6 +87,14 @@ class CourtBookingSystem {
         if (backBtn) {
             backBtn.addEventListener('click', () => {
                 this.hideBookingForm();
+            });
+        }
+        
+        // Confirm booking button
+        const confirmBtn = document.getElementById('confirm-booking');
+        if (confirmBtn) {
+            confirmBtn.addEventListener('click', () => {
+                this.showBookingForm();
             });
         }
     }
@@ -398,6 +409,7 @@ class CourtBookingSystem {
     processBooking() {
         const formData = new FormData(document.getElementById('final-booking-form'));
         const bookingData = {
+            id: `booking_${Date.now()}`,
             ...this.selectedBooking,
             playerName: formData.get('player-name'),
             playerEmail: formData.get('player-email'),
@@ -405,8 +417,16 @@ class CourtBookingSystem {
             playerLevel: formData.get('player-level'),
             additionalPlayers: formData.get('additional-players'),
             specialRequests: formData.get('special-requests'),
-            price: this.calculatePrice(this.selectedBooking.duration)
+            price: this.calculatePrice(this.selectedBooking.duration),
+            timestamp: new Date().toISOString(),
+            status: 'confirmed'
         };
+        
+        // Add the booking to the local bookings array
+        this.bookings.push(bookingData);
+        
+        // Store booking in localStorage for admin to access
+        this.storeBookingForAdmin(bookingData);
         
         // In a real application, this would send data to a server
         console.log('Booking data:', bookingData);
@@ -465,6 +485,136 @@ class CourtBookingSystem {
     addMinutesToTime(time, minutes) {
         const totalMinutes = this.timeToMinutes(time) + minutes;
         return this.minutesToTime(totalMinutes);
+    }
+    
+    storeBookingForAdmin(bookingData) {
+        // Get existing bookings from localStorage
+        let adminBookings = JSON.parse(localStorage.getItem('adminBookings') || '[]');
+        
+        // Add new booking
+        adminBookings.push(bookingData);
+        
+        // Sort by date and time (most recent first)
+        adminBookings.sort((a, b) => {
+            const dateCompare = new Date(b.timestamp) - new Date(a.timestamp);
+            return dateCompare;
+        });
+        
+        // Store back to localStorage
+        localStorage.setItem('adminBookings', JSON.stringify(adminBookings));
+        
+        // Also store a summary count
+        const bookingSummary = {
+            totalBookings: adminBookings.length,
+            todaysBookings: adminBookings.filter(booking => {
+                const today = new Date().toISOString().split('T')[0];
+                return booking.date === today;
+            }).length,
+            lastUpdated: new Date().toISOString()
+        };
+        localStorage.setItem('bookingSummary', JSON.stringify(bookingSummary));
+    }
+    
+    static getAdminBookings() {
+        return JSON.parse(localStorage.getItem('adminBookings') || '[]');
+    }
+    
+    static getBookingSummary() {
+        return JSON.parse(localStorage.getItem('bookingSummary') || '{"totalBookings": 0, "todaysBookings": 0}');
+    }
+    
+    loadExistingBookings() {
+        // Load any existing bookings from localStorage
+        const existingBookings = JSON.parse(localStorage.getItem('adminBookings') || '[]');
+        // Merge with sample bookings, avoiding duplicates
+        const allBookings = [...this.bookings];
+        existingBookings.forEach(booking => {
+            if (!allBookings.find(b => b.id === booking.id)) {
+                allBookings.push(booking);
+            }
+        });
+        this.bookings = allBookings;
+    }
+    
+    validateBookingForm() {
+        console.log('Validating booking form...');
+        const form = document.getElementById('final-booking-form');
+        
+        if (!form) {
+            console.error('Booking form not found');
+            this.showNotification('Booking form not found', 'error');
+            return false;
+        }
+        
+        const nameField = form.querySelector('#player-name');
+        const emailField = form.querySelector('#player-email');
+        
+        if (!nameField || !emailField) {
+            console.error('Required form fields not found');
+            this.showNotification('Required form fields not found', 'error');
+            return false;
+        }
+        
+        const name = nameField.value.trim();
+        const email = emailField.value.trim();
+        
+        console.log('Form values:', { name, email });
+        
+        if (!name) {
+            this.showNotification('Please enter your name', 'error');
+            return false;
+        }
+        
+        if (!email) {
+            this.showNotification('Please enter your email', 'error');
+            return false;
+        }
+        
+        // Basic email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            this.showNotification('Please enter a valid email address', 'error');
+            return false;
+        }
+        
+        return true;
+    }
+    
+    showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `booking-notification notification-${type}`;
+        notification.textContent = message;
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 6px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            ${type === 'success' ? 'background-color: #4CAF50;' : 
+              type === 'error' ? 'background-color: #f44336;' : 
+              'background-color: #2196F3;'}
+        `;
+        
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        setTimeout(() => {
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
     }
 }
 

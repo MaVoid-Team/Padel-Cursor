@@ -13,13 +13,17 @@ A complete replica of the Padel Social website built with HTML, CSS, and JavaScr
 - **Contact** - Contact form and location information
 - **Policies** - Terms of service, privacy policy, and facility rules
 - **Court Booking** - Custom booking system (built from scratch)
+- **Admin Dashboard** - Complete booking management system
 
 ### Key Features
 - ✅ Responsive design for all devices
 - ✅ Mobile-optimized navigation with hamburger menu
 - ✅ Interactive court booking system
+- ✅ Admin dashboard for booking management
 - ✅ Form validation and user feedback
 - ✅ Modern, clean design matching the original
+- ✅ Mobile booking access via sidebar menu
+- ✅ Booking button accessible on all mobile pages
 - ✅ Color palette: Midnight Green, Citrine, Dun, White
 - ✅ Professional typography and spacing
 
@@ -48,6 +52,23 @@ The custom court booking system includes:
 - **Booking Form** - Complete player information collection
 - **Confirmation** - Booking confirmation with details
 
+## 🔧 Admin Dashboard
+
+The admin dashboard provides complete booking management:
+
+- **Admin Login** - Secure access with demo credentials (admin/padel2025)
+- **Booking Overview** - View all bookings in a sortable table
+- **Filtering** - Filter bookings by date and court
+- **Export Data** - Export booking data to CSV format
+- **Statistics** - Real-time booking and revenue statistics  
+- **Booking Management** - View details and cancel bookings
+- **Mobile Responsive** - Admin panel works on all devices
+
+### Admin Access
+- Navigate to `admin.html`
+- Username: `admin`
+- Password: `padel2025`
+
 ### Booking Features
 - Real-time availability simulation
 - Dynamic pricing based on membership status
@@ -68,6 +89,8 @@ The website is fully responsive with breakpoints at:
 - Touch-friendly interface
 - Optimized layouts for small screens
 - Swipe-friendly interactions
+- Booking button in mobile sidebar menu
+- Full booking functionality on mobile
 
 ## 🛠️ Technical Stack
 
@@ -88,9 +111,11 @@ The website is fully responsive with breakpoints at:
 ├── contact.html            # Contact page
 ├── policies.html           # Policies page
 ├── booking.html            # Court booking page
+├── admin.html              # Admin dashboard
 ├── styles.css              # Main stylesheet
 ├── script.js               # Main JavaScript
 ├── booking.js              # Booking system JavaScript
+├── admin.js                # Admin dashboard JavaScript
 └── README.md               # Project documentation
 ```
 

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Padel Social</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">P</div>
+                <span class="logo-text">Padel Social</span>
+            </a>
+            <nav class="nav">
+                <a href="pricing.html" class="nav-link">Pricing</a>
+                <a href="events.html" class="nav-link">Events</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="padel-basics.html" class="nav-link">Padel Basics</a>
+                <a href="booking.html" class="nav-link mobile-book-btn">Book a Court</a>
+                <a href="admin.html" class="nav-link admin-nav-link" id="adminNavLink" style="display: none;">Admin</a>
+            </nav>
+            <a href="booking.html" class="book-btn">Book</a>
+            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1 class="page-title">Admin Dashboard</h1>
+            <p class="page-subtitle">Manage court bookings and view facility statistics</p>
+        </div>
+    </section>
+
+    <!-- Admin Login Section -->
+    <section class="admin-login-section" id="admin-login-section">
+        <div class="container">
+            <div class="admin-login-container">
+                <h2 class="section-title">Admin Login</h2>
+                <form class="admin-login-form" id="admin-login-form">
+                    <div class="form-group">
+                        <label for="admin-username" class="form-label">Username</label>
+                        <input type="text" id="admin-username" name="username" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-password" class="form-label">Password</label>
+                        <input type="password" id="admin-password" name="password" class="form-input" required>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </form>
+                <div class="admin-demo-note">
+                    <p><strong>Demo credentials:</strong></p>
+                    <p>Username: admin</p>
+                    <p>Password: padel2025</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Dashboard Section -->
+    <section class="admin-dashboard-section" id="admin-dashboard-section" style="display: none;">
+        <div class="container">
+            <!-- Dashboard Stats -->
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="total-bookings">0</div>
+                        <div class="stat-label">Total Bookings</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏸</div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="todays-bookings">0</div>
+                        <div class="stat-label">Today's Bookings</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="todays-revenue">$0</div>
+                        <div class="stat-label">Today's Revenue</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎾</div>
+                    <div class="stat-info">
+                        <div class="stat-number" id="active-courts">3</div>
+                        <div class="stat-label">Active Courts</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bookings Management -->
+            <div class="bookings-management">
+                <h2 class="section-title">Recent Bookings</h2>
+                
+                <!-- Filter Controls -->
+                <div class="booking-filters">
+                    <div class="filter-group">
+                        <label for="date-filter" class="filter-label">Filter by Date:</label>
+                        <input type="date" id="date-filter" class="filter-input">
+                    </div>
+                    <div class="filter-group">
+                        <label for="court-filter" class="filter-label">Filter by Court:</label>
+                        <select id="court-filter" class="filter-input">
+                            <option value="all">All Courts</option>
+                            <option value="1">Court 1</option>
+                            <option value="2">Court 2</option>
+                            <option value="3">Court 3</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <button class="btn btn-secondary" id="reset-filters">Reset Filters</button>
+                        <button class="btn btn-secondary" id="export-bookings">Export Data</button>
+                    </div>
+                </div>
+
+                <!-- Bookings Table -->
+                <div class="bookings-table-container">
+                    <table class="bookings-table" id="bookings-table">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Court</th>
+                                <th>Player Name</th>
+                                <th>Email</th>
+                                <th>Duration</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookings-table-body">
+                            <!-- Bookings will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <h2 class="section-title">Quick Actions</h2>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="refresh-data">Refresh Data</button>
+                    <button class="btn btn-secondary" id="clear-demo-data">Clear Demo Data</button>
+                    <button class="btn btn-secondary" id="logout-btn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <a href="index.html" class="footer-logo">
+                    <div class="logo-icon">P</div>
+                    <span class="logo-text">Padel Social</span>
+                </a>
+                <div class="footer-links">
+                    <a href="contact.html" class="footer-link">Contact</a>
+                    <a href="policies.html" class="footer-link">Privacy</a>
+                    <a href="policies.html" class="footer-link">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

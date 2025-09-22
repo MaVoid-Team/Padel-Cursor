@@ -1,6 +1,9 @@
 // Main JavaScript file for Padel Social website
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Check admin login state and show/hide admin nav link
+    checkAdminLoginState();
+    
     // Mobile menu toggle
     const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
     const nav = document.querySelector('.nav');
@@ -46,8 +49,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Form validation and submission
-    const forms = document.querySelectorAll('form');
+    // Form validation and submission (excluding booking forms)
+    const forms = document.querySelectorAll('form:not(.booking-form):not(.admin-login-form)');
     forms.forEach(form => {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -186,4 +189,19 @@ function formatTime(time) {
         hour: '2-digit',
         minute: '2-digit'
     }).format(time);
+}
+
+// Check if admin is logged in and show/hide admin nav link
+function checkAdminLoginState() {
+    const adminNavLink = document.getElementById('adminNavLink');
+    if (adminNavLink) {
+        // Check if admin is logged in (stored in sessionStorage by admin.js)
+        const isAdminLoggedIn = sessionStorage.getItem('adminLoggedIn') === 'true';
+        
+        if (isAdminLoggedIn) {
+            adminNavLink.style.display = 'block';
+        } else {
+            adminNavLink.style.display = 'none';
+        }
+    }
 }
