@@ -37,7 +37,7 @@ class CourtBookingSystem {
     this.currentDate = new Date();
     this.selectedDate = null;
     this.selectedDuration = 60;
-    this.apiBaseUrl = "/api";
+    this.apiUrl = "/api";
 
     this.init();
   }
@@ -680,9 +680,24 @@ class CourtBookingSystem {
   async loadExistingBookings(date) {
     try {
       const response = await fetch(`${this.apiUrl}/bookings/${date}`);
+      console.log(`API Response for ${date}:`, response.status, response.statusText);
+      
       if (response.ok) {
-        const data = await response.json();
-        return data.bookings || [];
+        const text = await response.text();
+        console.log('Response text:', text);
+        
+        try {
+          const data = JSON.parse(text);
+          return data.bookings || [];
+        } catch (parseError) {
+          console.error('Failed to parse JSON:', parseError);
+          console.error('Response was:', text);
+          return [];
+        }
+      } else {
+        const errorText = await response.text();
+        console.error('API Error:', response.status, errorText);
+        return [];
       }
     } catch (error) {
       console.error("Error loading bookings:", error);
