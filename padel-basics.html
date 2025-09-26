@@ -1,228 +1,385 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Padel Basics - Padel Social</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <!-- Header -->
     <header class="header">
-        <div class="container">
-            <a href="index.html" class="logo">
-                <div class="logo-icon">P</div>
-                <span class="logo-text">Padel Social</span>
-            </a>
-            <nav class="nav">
-                <a href="pricing.html" class="nav-link">Pricing</a>
-                <a href="events.html" class="nav-link">Events</a>
-                <a href="about.html" class="nav-link">About</a>
-                <a href="padel-basics.html" class="nav-link active">Padel Basics</a>
-                <a href="booking.html" class="nav-link mobile-book-btn">Book a Court</a>
-                <a href="admin.html" class="nav-link admin-nav-link" id="adminNavLink" style="display: none;">Admin</a>
-            </nav>
-            <a href="booking.html" class="book-btn">Book</a>
-            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
+      <div class="container">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">P</div>
+          <span class="logo-text">Padel Social</span>
+        </a>
+        <nav class="nav">
+          <a href="pricing.html" class="nav-link">Pricing</a>
+          <a href="events.html" class="nav-link">Events</a>
+          <a href="about.html" class="nav-link">About</a>
+          <a href="padel-basics.html" class="nav-link active">Padel Basics</a>
+          <a href="booking.html" class="nav-link mobile-book-btn"
+            >Book a Court</a
+          >
+          <a
+            href="admin.html"
+            class="nav-link admin-nav-link"
+            id="adminNavLink"
+            style="display: none"
+            >Admin</a
+          >
+        </nav>
+        <a href="booking.html" class="book-btn">Book</a>
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </header>
 
     <!-- Page Header -->
     <section class="page-header">
-        <div class="container">
-            <h1 class="page-title">Padel Basics</h1>
-            <p class="page-subtitle">Learn everything you need to know about padel, from the basic rules to advanced strategies.</p>
-        </div>
+      <div class="container">
+        <h1 class="page-title">Padel Basics</h1>
+        <p class="page-subtitle">
+          Learn everything you need to know about padel, from the basic rules to
+          advanced strategies.
+        </p>
+      </div>
     </section>
 
     <!-- What is Padel Section -->
     <section class="basics-section">
-        <div class="container">
-            <div class="what-is-padel">
-                <h2 class="section-title">What is padel all about?</h2>
-                <div class="padel-intro">
-                    <div class="padel-text">
-                        <p>Padel was invented in Mexico in 1969 and has since grown to become one of the most popular sports in Spain. Today, it's one of the fastest-growing sports in the world, with Miami serving as the epicenter of padel in the United States.</p>
-                        <p>Padel is a mix of racquet sports played on turf with a net and four glass walls. The ball stays in play off the walls, making it a dynamic and exciting game. It's a social sport played in doubles, making it easy to learn, fun, and challenging for players of all skill levels.</p>
-                    </div>
-                    <div class="padel-image">
-                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&crop=face" alt="Padel Player" class="intro-player-img">
-                    </div>
-                </div>
+      <div class="container">
+        <div class="what-is-padel">
+          <h2 class="section-title">What is padel all about?</h2>
+          <div class="padel-intro">
+            <div class="padel-text">
+              <p>
+                Padel was invented in Mexico in 1969 and has since grown to
+                become one of the most popular sports in Spain. Today, it's one
+                of the fastest-growing sports in the world, with Miami serving
+                as the epicenter of padel in the United States.
+              </p>
+              <p>
+                Padel is a mix of racquet sports played on turf with a net and
+                four glass walls. The ball stays in play off the walls, making
+                it a dynamic and exciting game. It's a social sport played in
+                doubles, making it easy to learn, fun, and challenging for
+                players of all skill levels.
+              </p>
             </div>
-
-            <!-- Rules Section -->
-            <div class="rules-section">
-                <h2 class="section-title">What are the rules?</h2>
-                <div class="rules-grid">
-                    <!-- Scoring Rule -->
-                    <div class="rule-card">
-                        <div class="rule-icon">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                                <circle cx="20" cy="20" r="15" stroke="currentColor" stroke-width="2" fill="none"/>
-                                <path d="M12 20 L20 12 L28 20 L20 28 Z" stroke="currentColor" stroke-width="2" fill="none"/>
-                            </svg>
-                        </div>
-                        <h3 class="rule-title">Scoring</h3>
-                        <p class="rule-description">Scoring is like tennis: Love, 15, 30, 40, Deuce. There's a "golden point" for ties. Sets go to 6 games (win by 2), with a tiebreaker at 6 all.</p>
-                    </div>
-
-                    <!-- The Serve Rule -->
-                    <div class="rule-card">
-                        <div class="rule-icon">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                                <circle cx="20" cy="20" r="15" stroke="currentColor" stroke-width="2" fill="none"/>
-                                <path d="M8 20 L32 20 M20 8 L20 32" stroke="currentColor" stroke-width="2"/>
-                                <circle cx="20" cy="20" r="3" fill="currentColor"/>
-                            </svg>
-                        </div>
-                        <h3 class="rule-title">The Serve</h3>
-                        <p class="rule-description">Serve underhand, bounce behind the service line, hit crosscourt into the opposite service box. Strike at or below waist level. You get two serves (including lets).</p>
-                    </div>
-
-                    <!-- In and Out Rule -->
-                    <div class="rule-card">
-                        <div class="rule-icon">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                                <rect x="5" y="15" width="30" height="20" stroke="currentColor" stroke-width="2" fill="none"/>
-                                <line x1="20" y1="15" x2="20" y2="35" stroke="currentColor" stroke-width="2"/>
-                                <circle cx="15" cy="25" r="2" fill="currentColor"/>
-                            </svg>
-                        </div>
-                        <h3 class="rule-title">In and Out</h3>
-                        <p class="rule-description">Ball must hit the turf first to be in. Hitting the glass or fence first on the opposite side is out. You can return balls off the glass/fence on your own side, but a serve hitting the fence after the turf is out.</p>
-                    </div>
-
-                    <!-- Playing off the Walls Rule -->
-                    <div class="rule-card">
-                        <div class="rule-icon">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                                <rect x="5" y="10" width="30" height="20" stroke="currentColor" stroke-width="2" fill="none"/>
-                                <line x1="20" y1="10" x2="20" y2="30" stroke="currentColor" stroke-width="2"/>
-                                <path d="M5 15 L15 20 L5 25" stroke="currentColor" stroke-width="2"/>
-                                <path d="M35 15 L25 20 L35 25" stroke="currentColor" stroke-width="2"/>
-                            </svg>
-                        </div>
-                        <h3 class="rule-title">Playing off the Walls</h3>
-                        <p class="rule-description">You can let the ball bounce off the glass before hitting it. You can even use the walls on your side for shots. This is what makes padel unique and exciting!</p>
-                    </div>
-
-                    <!-- Winning Points Rule -->
-                    <div class="rule-card">
-                        <div class="rule-icon">
-                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                                <path d="M8 20 L32 20 M20 8 L20 32" stroke="currentColor" stroke-width="2"/>
-                                <circle cx="20" cy="20" r="3" fill="currentColor"/>
-                                <path d="M15 15 L25 15 L25 25 L15 25 Z" stroke="currentColor" stroke-width="1" fill="none"/>
-                            </svg>
-                        </div>
-                        <h3 class="rule-title">Winning Points</h3>
-                        <p class="rule-description">Points are won when a ball cannot be returned over the net or if it bounces twice. The ball must always go over the net to the opponent's side.</p>
-                    </div>
-                </div>
+            <div class="padel-image">
+              <img
+                src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop&crop=face"
+                alt="Padel Player"
+                class="intro-player-img"
+              />
             </div>
-
-            <!-- Equipment Section -->
-            <div class="equipment-section">
-                <h2 class="section-title">Equipment You'll Need</h2>
-                <div class="equipment-grid">
-                    <div class="equipment-card">
-                        <div class="equipment-icon">🏓</div>
-                        <h3>Padel Racket</h3>
-                        <p>Solid rackets with holes, shorter than tennis rackets. We provide rackets for beginners, or you can bring your own.</p>
-                    </div>
-                    <div class="equipment-card">
-                        <div class="equipment-icon">⚪</div>
-                        <h3>Padel Balls</h3>
-                        <p>Similar to tennis balls but with less pressure. We provide balls for all games and practice sessions.</p>
-                    </div>
-                    <div class="equipment-card">
-                        <div class="equipment-icon">👟</div>
-                        <h3>Court Shoes</h3>
-                        <p>Non-marking athletic shoes with good grip. Tennis or indoor court shoes work perfectly for padel.</p>
-                    </div>
-                    <div class="equipment-card">
-                        <div class="equipment-icon">👕</div>
-                        <h3>Comfortable Clothing</h3>
-                        <p>Wear comfortable athletic clothing that allows for easy movement. No special uniform required!</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Getting Started Section -->
-            <div class="getting-started">
-                <h2 class="section-title">Getting Started</h2>
-                <div class="steps-grid">
-                    <div class="step-card">
-                        <div class="step-number">1</div>
-                        <h3>Book a Court</h3>
-                        <p>Use our online booking system to reserve a court. We recommend starting with a 1-hour session for your first time.</p>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-number">2</div>
-                        <h3>Take a Lesson</h3>
-                        <p>Book a beginner lesson with one of our certified instructors to learn the basics and proper technique.</p>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-number">3</div>
-                        <h3>Join Social Events</h3>
-                        <p>Participate in our weekly social events to meet other players and practice in a fun, relaxed environment.</p>
-                    </div>
-                    <div class="step-card">
-                        <div class="step-number">4</div>
-                        <h3>Improve Your Game</h3>
-                        <p>Take advantage of our coaching programs and clinics to develop your skills and strategy.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tips Section -->
-            <div class="tips-section">
-                <h2 class="section-title">Pro Tips for Beginners</h2>
-                <div class="tips-content">
-                    <div class="tip-item">
-                        <h4>Start with the Basics</h4>
-                        <p>Focus on getting the ball over the net consistently before worrying about power or spin. Control is more important than speed.</p>
-                    </div>
-                    <div class="tip-item">
-                        <h4>Use the Walls</h4>
-                        <p>Don't be afraid to let the ball bounce off the walls. This is what makes padel unique and can be a strategic advantage.</p>
-                    </div>
-                    <div class="tip-item">
-                        <h4>Communicate with Your Partner</h4>
-                        <p>Padel is a doubles game, so communication is key. Call out shots and work together as a team.</p>
-                    </div>
-                    <div class="tip-item">
-                        <h4>Practice Your Serve</h4>
-                        <p>A good serve sets up the point. Practice your underhand serve to get it consistently in the service box.</p>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+
+        <!-- Rules Section -->
+        <div class="rules-section">
+          <h2 class="section-title">What are the rules?</h2>
+          <div class="rules-grid">
+            <!-- Scoring Rule -->
+            <div class="rule-card">
+              <div class="rule-icon">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                  <circle
+                    cx="20"
+                    cy="20"
+                    r="15"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    fill="none"
+                  />
+                  <path
+                    d="M12 20 L20 12 L28 20 L20 28 Z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    fill="none"
+                  />
+                </svg>
+              </div>
+              <h3 class="rule-title">Scoring</h3>
+              <p class="rule-description">
+                Scoring is like tennis: Love, 15, 30, 40, Deuce. There's a
+                "golden point" for ties. Sets go to 6 games (win by 2), with a
+                tiebreaker at 6 all.
+              </p>
+            </div>
+
+            <!-- The Serve Rule -->
+            <div class="rule-card">
+              <div class="rule-icon">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                  <circle
+                    cx="20"
+                    cy="20"
+                    r="15"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    fill="none"
+                  />
+                  <path
+                    d="M8 20 L32 20 M20 8 L20 32"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <circle cx="20" cy="20" r="3" fill="currentColor" />
+                </svg>
+              </div>
+              <h3 class="rule-title">The Serve</h3>
+              <p class="rule-description">
+                Serve underhand, bounce behind the service line, hit crosscourt
+                into the opposite service box. Strike at or below waist level.
+                You get two serves (including lets).
+              </p>
+            </div>
+
+            <!-- In and Out Rule -->
+            <div class="rule-card">
+              <div class="rule-icon">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                  <rect
+                    x="5"
+                    y="15"
+                    width="30"
+                    height="20"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    fill="none"
+                  />
+                  <line
+                    x1="20"
+                    y1="15"
+                    x2="20"
+                    y2="35"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <circle cx="15" cy="25" r="2" fill="currentColor" />
+                </svg>
+              </div>
+              <h3 class="rule-title">In and Out</h3>
+              <p class="rule-description">
+                Ball must hit the turf first to be in. Hitting the glass or
+                fence first on the opposite side is out. You can return balls
+                off the glass/fence on your own side, but a serve hitting the
+                fence after the turf is out.
+              </p>
+            </div>
+
+            <!-- Playing off the Walls Rule -->
+            <div class="rule-card">
+              <div class="rule-icon">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                  <rect
+                    x="5"
+                    y="10"
+                    width="30"
+                    height="20"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    fill="none"
+                  />
+                  <line
+                    x1="20"
+                    y1="10"
+                    x2="20"
+                    y2="30"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M5 15 L15 20 L5 25"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path
+                    d="M35 15 L25 20 L35 25"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                </svg>
+              </div>
+              <h3 class="rule-title">Playing off the Walls</h3>
+              <p class="rule-description">
+                You can let the ball bounce off the glass before hitting it. You
+                can even use the walls on your side for shots. This is what
+                makes padel unique and exciting!
+              </p>
+            </div>
+
+            <!-- Winning Points Rule -->
+            <div class="rule-card">
+              <div class="rule-icon">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                  <path
+                    d="M8 20 L32 20 M20 8 L20 32"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <circle cx="20" cy="20" r="3" fill="currentColor" />
+                  <path
+                    d="M15 15 L25 15 L25 25 L15 25 Z"
+                    stroke="currentColor"
+                    stroke-width="1"
+                    fill="none"
+                  />
+                </svg>
+              </div>
+              <h3 class="rule-title">Winning Points</h3>
+              <p class="rule-description">
+                Points are won when a ball cannot be returned over the net or if
+                it bounces twice. The ball must always go over the net to the
+                opponent's side.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Equipment Section -->
+        <div class="equipment-section">
+          <h2 class="section-title">Equipment You'll Need</h2>
+          <div class="equipment-grid">
+            <div class="equipment-card">
+              <div class="equipment-icon">🏓</div>
+              <h3>Padel Racket</h3>
+              <p>
+                Solid rackets with holes, shorter than tennis rackets. We
+                provide rackets for beginners, or you can bring your own.
+              </p>
+            </div>
+            <div class="equipment-card">
+              <div class="equipment-icon">⚪</div>
+              <h3>Padel Balls</h3>
+              <p>
+                Similar to tennis balls but with less pressure. We provide balls
+                for all games and practice sessions.
+              </p>
+            </div>
+            <div class="equipment-card">
+              <div class="equipment-icon">👟</div>
+              <h3>Court Shoes</h3>
+              <p>
+                Non-marking athletic shoes with good grip. Tennis or indoor
+                court shoes work perfectly for padel.
+              </p>
+            </div>
+            <div class="equipment-card">
+              <div class="equipment-icon">👕</div>
+              <h3>Comfortable Clothing</h3>
+              <p>
+                Wear comfortable athletic clothing that allows for easy
+                movement. No special uniform required!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Getting Started Section -->
+        <div class="getting-started">
+          <h2 class="section-title">Getting Started</h2>
+          <div class="steps-grid">
+            <div class="step-card">
+              <div class="step-number">1</div>
+              <h3>Book a Court</h3>
+              <p>
+                Use our online booking system to reserve a court. We recommend
+                starting with a 1-hour session for your first time.
+              </p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">2</div>
+              <h3>Take a Lesson</h3>
+              <p>
+                Book a beginner lesson with one of our certified instructors to
+                learn the basics and proper technique.
+              </p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">3</div>
+              <h3>Join Social Events</h3>
+              <p>
+                Participate in our weekly social events to meet other players
+                and practice in a fun, relaxed environment.
+              </p>
+            </div>
+            <div class="step-card">
+              <div class="step-number">4</div>
+              <h3>Improve Your Game</h3>
+              <p>
+                Take advantage of our coaching programs and clinics to develop
+                your skills and strategy.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="tips-section">
+          <h2 class="section-title">Pro Tips for Beginners</h2>
+          <div class="tips-content">
+            <div class="tip-item">
+              <h4>Start with the Basics</h4>
+              <p>
+                Focus on getting the ball over the net consistently before
+                worrying about power or spin. Control is more important than
+                speed.
+              </p>
+            </div>
+            <div class="tip-item">
+              <h4>Use the Walls</h4>
+              <p>
+                Don't be afraid to let the ball bounce off the walls. This is
+                what makes padel unique and can be a strategic advantage.
+              </p>
+            </div>
+            <div class="tip-item">
+              <h4>Communicate with Your Partner</h4>
+              <p>
+                Padel is a doubles game, so communication is key. Call out shots
+                and work together as a team.
+              </p>
+            </div>
+            <div class="tip-item">
+              <h4>Practice Your Serve</h4>
+              <p>
+                A good serve sets up the point. Practice your underhand serve to
+                get it consistently in the service box.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <a href="index.html" class="footer-logo">
-                    <div class="logo-icon">P</div>
-                    <span class="logo-text">Padel Social</span>
-                </a>
-                <div class="footer-links">
-                    <a href="contact.html" class="footer-link">Contact</a>
-                    <a href="policies.html" class="footer-link">Privacy</a>
-                    <a href="policies.html" class="footer-link">Terms</a>
-                </div>
-            </div>
+      <div class="container">
+        <div class="footer-content">
+          <a href="index.html" class="footer-logo">
+            <div class="logo-icon">P</div>
+            <span class="logo-text">Padel Social</span>
+          </a>
+          <div class="footer-links">
+            <a href="contact.html" class="footer-link">Contact</a>
+            <a href="policies.html" class="footer-link">Privacy</a>
+            <a href="policies.html" class="footer-link">Terms</a>
+          </div>
         </div>
+      </div>
     </footer>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

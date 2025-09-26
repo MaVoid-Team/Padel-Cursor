@@ -1,183 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contact - Padel Social</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <!-- Header -->
     <header class="header">
-        <div class="container">
-            <a href="index.html" class="logo">
-                <div class="logo-icon">P</div>
-                <span class="logo-text">Padel Social</span>
-            </a>
-            <nav class="nav">
-                <a href="pricing.html" class="nav-link">Pricing</a>
-                <a href="events.html" class="nav-link">Events</a>
-                <a href="about.html" class="nav-link">About</a>
-                <a href="padel-basics.html" class="nav-link">Padel Basics</a>
-                <a href="booking.html" class="nav-link mobile-book-btn">Book a Court</a>
-                <a href="admin.html" class="nav-link admin-nav-link" id="adminNavLink" style="display: none;">Admin</a>
-            </nav>
-            <a href="booking.html" class="book-btn">Book</a>
-            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
+      <div class="container">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">P</div>
+          <span class="logo-text">Padel Social</span>
+        </a>
+        <nav class="nav">
+          <a href="pricing.html" class="nav-link">Pricing</a>
+          <a href="events.html" class="nav-link">Events</a>
+          <a href="about.html" class="nav-link">About</a>
+          <a href="padel-basics.html" class="nav-link">Padel Basics</a>
+          <a href="booking.html" class="nav-link mobile-book-btn"
+            >Book a Court</a
+          >
+          <a
+            href="admin.html"
+            class="nav-link admin-nav-link"
+            id="adminNavLink"
+            style="display: none"
+            >Admin</a
+          >
+        </nav>
+        <a href="booking.html" class="book-btn">Book</a>
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </header>
 
     <!-- Page Header -->
     <section class="page-header">
-        <div class="container">
-            <h1 class="page-title">Contact Us</h1>
-            <p class="page-subtitle">Get in touch with our team. We're here to help you get started with padel and answer any questions you may have.</p>
-        </div>
+      <div class="container">
+        <h1 class="page-title">Contact Us</h1>
+        <p class="page-subtitle">
+          Get in touch with our team. We're here to help you get started with
+          padel and answer any questions you may have.
+        </p>
+      </div>
     </section>
 
     <!-- Contact Section -->
     <section class="contact-section">
-        <div class="container">
-            <div class="contact-grid">
-                <!-- Contact Information -->
-                <div class="contact-info">
-                    <h3>Get in Touch</h3>
-                    
-                    <div class="contact-item">
-                        <h4>Location</h4>
-                        <p>Westbard Square<br>Bethesda, MD 20816<br>United States</p>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <h4>Phone</h4>
-                        <p>(301) 555-PADEL<br>Mon-Fri: 6:00 AM - 10:00 PM<br>Sat-Sun: 7:00 AM - 9:00 PM</p>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <h4>Email</h4>
-                        <p>info@padelsocial.com<br>bookings@padelsocial.com<br>events@padelsocial.com</p>
-                    </div>
-                    
-                    <div class="contact-item">
-                        <h4>Social Media</h4>
-                        <p>Follow us on Instagram and Facebook<br>@padelsocial for updates and events</p>
-                    </div>
+      <div class="container">
+        <div class="contact-grid">
+          <!-- Contact Information -->
+          <div class="contact-info">
+            <h3>Get in Touch</h3>
 
-                    <div class="contact-item">
-                        <h4>Private Events</h4>
-                        <p>Padel Social Bethesda is the ideal place to host your private gathering. Our team is ready to help you organize a perfect experience, whether it's a corporate event, birthday party, or other special occasion. Come play and have fun at our one-of-a-kind venue!</p>
-                    </div>
-                </div>
-
-                <!-- Contact Form -->
-                <div class="contact-form-container">
-                    <h3>Send us a Message</h3>
-                    <p class="form-description">Complete this form and our team will be in touch soon.</p>
-                    
-                    <form class="contact-form" id="contactForm">
-                        <div class="form-group">
-                            <label for="name" class="form-label">Name*</label>
-                            <input type="text" id="name" name="name" class="form-input" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email" class="form-label">Email*</label>
-                            <input type="email" id="email" name="email" class="form-input" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="phone" class="form-label">Phone</label>
-                            <input type="tel" id="phone" name="phone" class="form-input">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="people" class="form-label">How Many People would you like to host?</label>
-                            <input type="number" id="people" name="people" class="form-input" min="1" max="20">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="date" class="form-label">Preferred Date*</label>
-                            <input type="date" id="date" name="date" class="form-input" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="message" class="form-label">Type your message...</label>
-                            <textarea id="message" name="message" class="form-textarea" rows="5" placeholder="Tell us about your event or any questions you have..."></textarea>
-                        </div>
-                        
-                        <button type="submit" class="form-submit">Submit</button>
-                    </form>
-                </div>
+            <div class="contact-item">
+              <h4>Location</h4>
+              <p>Westbard Square<br />Bethesda, MD 20816<br />United States</p>
             </div>
 
-            <!-- Map Section -->
-            <div class="map-section">
-                <h3 class="section-title">Find Us</h3>
-                <div class="map-container">
-                    <div class="map-placeholder">
-                        <div class="map-icon">📍</div>
-                        <h4>Padel Social Bethesda</h4>
-                        <p>Westbard Square, Bethesda, MD 20816</p>
-                        <p>Click to open in Google Maps</p>
-                    </div>
-                </div>
+            <div class="contact-item">
+              <h4>Phone</h4>
+              <p>
+                (301) 555-PADEL<br />Mon-Fri: 6:00 AM - 10:00 PM<br />Sat-Sun:
+                7:00 AM - 9:00 PM
+              </p>
             </div>
 
-            <!-- FAQ Section -->
-            <div class="contact-faq">
-                <h3 class="section-title">Frequently Asked Questions</h3>
-                <div class="faq-grid">
-                    <div class="faq-item">
-                        <h4>Do I need to bring my own equipment?</h4>
-                        <p>No! We provide rackets and balls for all players. You're welcome to bring your own equipment if you prefer.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h4>What should I wear?</h4>
-                        <p>Comfortable athletic clothing and non-marking court shoes. We recommend tennis or indoor court shoes for the best grip.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h4>Can I book a court without a membership?</h4>
-                        <p>Yes! Non-members can book courts at our regular rates. Members get discounted rates and priority booking.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h4>Do you offer lessons for beginners?</h4>
-                        <p>Absolutely! We have certified instructors who offer private and group lessons for all skill levels.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h4>Is there parking available?</h4>
-                        <p>Yes, we have free parking available for all members and guests at our Westbard Square location.</p>
-                    </div>
-                    <div class="faq-item">
-                        <h4>What's your cancellation policy?</h4>
-                        <p>You can cancel or reschedule your booking up to 24 hours in advance at no charge. Late cancellations may incur a fee.</p>
-                    </div>
-                </div>
+            <div class="contact-item">
+              <h4>Email</h4>
+              <p>
+                info@padelsocial.com<br />bookings@padelsocial.com<br />events@padelsocial.com
+              </p>
             </div>
+
+            <div class="contact-item">
+              <h4>Social Media</h4>
+              <p>
+                Follow us on Instagram and Facebook<br />@padelsocial for
+                updates and events
+              </p>
+            </div>
+
+            <div class="contact-item">
+              <h4>Private Events</h4>
+              <p>
+                Padel Social Bethesda is the ideal place to host your private
+                gathering. Our team is ready to help you organize a perfect
+                experience, whether it's a corporate event, birthday party, or
+                other special occasion. Come play and have fun at our
+                one-of-a-kind venue!
+              </p>
+            </div>
+          </div>
+
+          <!-- Contact Form -->
+          <div class="contact-form-container">
+            <h3>Send us a Message</h3>
+            <p class="form-description">
+              Complete this form and our team will be in touch soon.
+            </p>
+
+            <form class="contact-form" id="contactForm">
+              <div class="form-group">
+                <label for="name" class="form-label">Name*</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="form-input"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="email" class="form-label">Email*</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  class="form-input"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="tel" id="phone" name="phone" class="form-input" />
+              </div>
+
+              <div class="form-group">
+                <label for="people" class="form-label"
+                  >How Many People would you like to host?</label
+                >
+                <input
+                  type="number"
+                  id="people"
+                  name="people"
+                  class="form-input"
+                  min="1"
+                  max="20"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="date" class="form-label">Preferred Date*</label>
+                <input
+                  type="date"
+                  id="date"
+                  name="date"
+                  class="form-input"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="message" class="form-label"
+                  >Type your message...</label
+                >
+                <textarea
+                  id="message"
+                  name="message"
+                  class="form-textarea"
+                  rows="5"
+                  placeholder="Tell us about your event or any questions you have..."
+                ></textarea>
+              </div>
+
+              <button type="submit" class="form-submit">Submit</button>
+            </form>
+          </div>
         </div>
+
+        <!-- Map Section -->
+        <div class="map-section">
+          <h3 class="section-title">Find Us</h3>
+          <div class="map-container">
+            <div class="map-placeholder">
+              <div class="map-icon">📍</div>
+              <h4>Padel Social Bethesda</h4>
+              <p>Westbard Square, Bethesda, MD 20816</p>
+              <p>Click to open in Google Maps</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="contact-faq">
+          <h3 class="section-title">Frequently Asked Questions</h3>
+          <div class="faq-grid">
+            <div class="faq-item">
+              <h4>Do I need to bring my own equipment?</h4>
+              <p>
+                No! We provide rackets and balls for all players. You're welcome
+                to bring your own equipment if you prefer.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4>What should I wear?</h4>
+              <p>
+                Comfortable athletic clothing and non-marking court shoes. We
+                recommend tennis or indoor court shoes for the best grip.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4>Can I book a court without a membership?</h4>
+              <p>
+                Yes! Non-members can book courts at our regular rates. Members
+                get discounted rates and priority booking.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4>Do you offer lessons for beginners?</h4>
+              <p>
+                Absolutely! We have certified instructors who offer private and
+                group lessons for all skill levels.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4>Is there parking available?</h4>
+              <p>
+                Yes, we have free parking available for all members and guests
+                at our Westbard Square location.
+              </p>
+            </div>
+            <div class="faq-item">
+              <h4>What's your cancellation policy?</h4>
+              <p>
+                You can cancel or reschedule your booking up to 24 hours in
+                advance at no charge. Late cancellations may incur a fee.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <a href="index.html" class="footer-logo">
-                    <div class="logo-icon">P</div>
-                    <span class="logo-text">Padel Social</span>
-                </a>
-                <div class="footer-links">
-                    <a href="contact.html" class="footer-link">Contact</a>
-                    <a href="policies.html" class="footer-link">Privacy</a>
-                    <a href="policies.html" class="footer-link">Terms</a>
-                </div>
-            </div>
+      <div class="container">
+        <div class="footer-content">
+          <a href="index.html" class="footer-logo">
+            <div class="logo-icon">P</div>
+            <span class="logo-text">Padel Social</span>
+          </a>
+          <div class="footer-links">
+            <a href="contact.html" class="footer-link">Contact</a>
+            <a href="policies.html" class="footer-link">Privacy</a>
+            <a href="policies.html" class="footer-link">Terms</a>
+          </div>
         </div>
+      </div>
     </footer>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>

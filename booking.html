@@ -1,206 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Court Booking - Padel Social</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <!-- Header -->
     <header class="header">
-        <div class="container">
-            <a href="index.html" class="logo">
-                <div class="logo-icon">P</div>
-                <span class="logo-text">Padel Social</span>
-            </a>
-            <nav class="nav">
-                <a href="pricing.html" class="nav-link">Pricing</a>
-                <a href="events.html" class="nav-link">Events</a>
-                <a href="about.html" class="nav-link">About</a>
-                <a href="padel-basics.html" class="nav-link">Padel Basics</a>
-                <a href="booking.html" class="nav-link mobile-book-btn">Book a Court</a>
-                <a href="admin.html" class="nav-link admin-nav-link" id="adminNavLink" style="display: none;">Admin</a>
-            </nav>
-            <a href="booking.html" class="book-btn">Book</a>
-            <button class="mobile-menu-toggle" id="mobile-menu-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
+      <div class="container">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">P</div>
+          <span class="logo-text">Padel Social</span>
+        </a>
+        <nav class="nav">
+          <a href="pricing.html" class="nav-link">Pricing</a>
+          <a href="events.html" class="nav-link">Events</a>
+          <a href="about.html" class="nav-link">About</a>
+          <a href="padel-basics.html" class="nav-link">Padel Basics</a>
+          <a href="booking.html" class="nav-link mobile-book-btn"
+            >Book a Court</a
+          >
+          <a
+            href="admin.html"
+            class="nav-link admin-nav-link"
+            id="adminNavLink"
+            style="display: none"
+            >Admin</a
+          >
+        </nav>
+        <a href="booking.html" class="book-btn">Book</a>
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </header>
 
     <!-- Page Header -->
     <section class="page-header">
-        <div class="container">
-            <h1 class="page-title">Book a Court</h1>
-            <p class="page-subtitle">Reserve your padel court and get ready to play. Choose from our three outdoor courts with professional lighting.</p>
-        </div>
+      <div class="container">
+        <h1 class="page-title">Book a Court</h1>
+        <p class="page-subtitle">
+          Reserve your padel court and get ready to play. Choose from our three
+          outdoor courts with professional lighting.
+        </p>
+      </div>
     </section>
 
     <!-- Booking Section -->
     <section class="booking-section">
-        <div class="container">
-            <div class="booking-container">
-                <!-- Date Selection -->
-                <div class="date-selection-section">
-                    <h2 class="section-title">Select Booking Date</h2>
-                    <div class="date-picker-container">
-                        <div class="date-picker-header">
-                            <button id="prev-month" class="calendar-nav">‹</button>
-                            <h3 id="current-month"></h3>
-                            <button id="next-month" class="calendar-nav">›</button>
-                        </div>
-                        <div class="date-picker-grid" id="date-picker-grid">
-                            <!-- Date picker will be populated by JavaScript -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Court Booking Table -->
-                <div class="booking-table-section" id="booking-table-section" style="display: none;">
-                    <h2 class="section-title">Court Availability - <span id="selected-date-display"></span></h2>
-                    <div class="booking-table-container">
-                        <div class="table-wrapper">
-                            <table class="booking-table" id="booking-table">
-                                <thead>
-                                    <tr>
-                                        <th class="time-header">Time</th>
-                                        <th class="court-header">Court 1</th>
-                                        <th class="court-header">Court 2</th>
-                                        <th class="court-header">Court 3</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="booking-table-body">
-                                    <!-- Table will be populated by JavaScript -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="booking-legend">
-                            <div class="legend-item">
-                                <div class="legend-color available"></div>
-                                <span>Available</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color booked"></div>
-                                <span>Booked</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color selected"></div>
-                                <span>Selected</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color maintenance"></div>
-                                <span>Maintenance</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Duration Selection -->
-                <div class="duration-section" id="duration-section" style="display: none;">
-                    <h3>Select Duration</h3>
-                    <div class="duration-options">
-                        <button class="duration-btn" data-duration="60">1 Hour</button>
-                        <button class="duration-btn" data-duration="90">1.5 Hours</button>
-                        <button class="duration-btn" data-duration="120">2 Hours</button>
-                    </div>
-                </div>
-
-                <!-- Booking Summary -->
-                <div class="booking-summary" id="booking-summary" style="display: none;">
-                    <h3>Booking Summary</h3>
-                    <div class="summary-details">
-                        <div class="summary-item">
-                            <span class="summary-label">Date:</span>
-                            <span class="summary-value" id="summary-date"></span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Time:</span>
-                            <span class="summary-value" id="summary-time"></span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Duration:</span>
-                            <span class="summary-value" id="summary-duration"></span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Court:</span>
-                            <span class="summary-value" id="summary-court"></span>
-                        </div>
-                        <div class="summary-item">
-                            <span class="summary-label">Price:</span>
-                            <span class="summary-value" id="summary-price"></span>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary confirm-booking" id="confirm-booking">Confirm Booking</button>
-                </div>
-
-                <!-- Booking Form -->
-                <div class="booking-form-container" id="booking-form" style="display: none;">
-                    <h3>Complete Your Booking</h3>
-                    <form class="booking-form" id="final-booking-form">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="player-name" class="form-label">Your Name*</label>
-                                <input type="text" id="player-name" name="player-name" class="form-input" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="player-email" class="form-label">Email*</label>
-                                <input type="email" id="player-email" name="player-email" class="form-input" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="player-phone" class="form-label">Phone Number</label>
-                                <input type="tel" id="player-phone" name="player-phone" class="form-input">
-                            </div>
-                            <div class="form-group">
-                                <label for="player-level" class="form-label">Skill Level</label>
-                                <select id="player-level" name="player-level" class="form-input">
-                                    <option value="beginner">Beginner</option>
-                                    <option value="intermediate">Intermediate</option>
-                                    <option value="advanced">Advanced</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="additional-players" class="form-label">Additional Players (Names)</label>
-                            <textarea id="additional-players" name="additional-players" class="form-textarea" rows="3" placeholder="List the names of other players joining you..."></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="special-requests" class="form-label">Special Requests</label>
-                            <textarea id="special-requests" name="special-requests" class="form-textarea" rows="3" placeholder="Any special requests or notes..."></textarea>
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" class="btn btn-secondary" id="back-to-courts">Back to Courts</button>
-                            <button type="submit" class="btn btn-primary">Complete Booking</button>
-                        </div>
-                    </form>
-                </div>
+      <div class="container">
+        <div class="booking-container">
+          <!-- Date Selection -->
+          <div class="date-selection-section">
+            <h2 class="section-title">Select Booking Date</h2>
+            <div class="date-picker-container">
+              <div class="date-picker-header">
+                <button id="prev-month" class="calendar-nav">‹</button>
+                <h3 id="current-month"></h3>
+                <button id="next-month" class="calendar-nav">›</button>
+              </div>
+              <div class="date-picker-grid" id="date-picker-grid">
+                <!-- Date picker will be populated by JavaScript -->
+              </div>
             </div>
+          </div>
+
+          <!-- Court Booking Table -->
+          <div
+            class="booking-table-section"
+            id="booking-table-section"
+            style="display: none"
+          >
+            <h2 class="section-title">
+              Court Availability - <span id="selected-date-display"></span>
+            </h2>
+            <div class="booking-table-container">
+              <div class="table-wrapper">
+                <table class="booking-table" id="booking-table">
+                  <thead>
+                    <tr>
+                      <th class="time-header">Time</th>
+                      <th class="court-header">Court 1</th>
+                      <th class="court-header">Court 2</th>
+                      <th class="court-header">Court 3</th>
+                    </tr>
+                  </thead>
+                  <tbody id="booking-table-body">
+                    <!-- Table will be populated by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+              <div class="booking-legend">
+                <div class="legend-item">
+                  <div class="legend-color available"></div>
+                  <span>Available</span>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color booked"></div>
+                  <span>Booked</span>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color selected"></div>
+                  <span>Selected</span>
+                </div>
+                <div class="legend-item">
+                  <div class="legend-color maintenance"></div>
+                  <span>Maintenance</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Duration Selection -->
+          <div
+            class="duration-section"
+            id="duration-section"
+            style="display: none"
+          >
+            <h3>Select Duration</h3>
+            <div class="duration-options">
+              <button class="duration-btn" data-duration="60">1 Hour</button>
+              <button class="duration-btn" data-duration="90">1.5 Hours</button>
+              <button class="duration-btn" data-duration="120">2 Hours</button>
+            </div>
+          </div>
+
+          <!-- Booking Summary -->
+          <div
+            class="booking-summary"
+            id="booking-summary"
+            style="display: none"
+          >
+            <h3>Booking Summary</h3>
+            <div class="summary-details">
+              <div class="summary-item">
+                <span class="summary-label">Date:</span>
+                <span class="summary-value" id="summary-date"></span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Time:</span>
+                <span class="summary-value" id="summary-time"></span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Duration:</span>
+                <span class="summary-value" id="summary-duration"></span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Court:</span>
+                <span class="summary-value" id="summary-court"></span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Price:</span>
+                <span class="summary-value" id="summary-price"></span>
+              </div>
+            </div>
+            <button
+              class="btn btn-primary confirm-booking"
+              id="confirm-booking"
+            >
+              Confirm Booking
+            </button>
+          </div>
+
+          <!-- Booking Form -->
+          <div
+            class="booking-form-container"
+            id="booking-form"
+            style="display: none"
+          >
+            <h3>Complete Your Booking</h3>
+            <form class="booking-form" id="final-booking-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="player-name" class="form-label">Your Name*</label>
+                  <input
+                    type="text"
+                    id="player-name"
+                    name="player-name"
+                    class="form-input"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="player-email" class="form-label">Email*</label>
+                  <input
+                    type="email"
+                    id="player-email"
+                    name="player-email"
+                    class="form-input"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="player-phone" class="form-label"
+                    >Phone Number</label
+                  >
+                  <input
+                    type="tel"
+                    id="player-phone"
+                    name="player-phone"
+                    class="form-input"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="player-level" class="form-label"
+                    >Skill Level</label
+                  >
+                  <select
+                    id="player-level"
+                    name="player-level"
+                    class="form-input"
+                  >
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="additional-players" class="form-label"
+                  >Additional Players (Names)</label
+                >
+                <textarea
+                  id="additional-players"
+                  name="additional-players"
+                  class="form-textarea"
+                  rows="3"
+                  placeholder="List the names of other players joining you..."
+                ></textarea>
+              </div>
+              <div class="form-group">
+                <label for="special-requests" class="form-label"
+                  >Special Requests</label
+                >
+                <textarea
+                  id="special-requests"
+                  name="special-requests"
+                  class="form-textarea"
+                  rows="3"
+                  placeholder="Any special requests or notes..."
+                ></textarea>
+              </div>
+              <div class="form-actions">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  id="back-to-courts"
+                >
+                  Back to Courts
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  Complete Booking
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <a href="index.html" class="footer-logo">
-                    <div class="logo-icon">P</div>
-                    <span class="logo-text">Padel Social</span>
-                </a>
-                <div class="footer-links">
-                    <a href="contact.html" class="footer-link">Contact</a>
-                    <a href="policies.html" class="footer-link">Privacy</a>
-                    <a href="policies.html" class="footer-link">Terms</a>
-                </div>
-            </div>
+      <div class="container">
+        <div class="footer-content">
+          <a href="index.html" class="footer-logo">
+            <div class="logo-icon">P</div>
+            <span class="logo-text">Padel Social</span>
+          </a>
+          <div class="footer-links">
+            <a href="contact.html" class="footer-link">Contact</a>
+            <a href="policies.html" class="footer-link">Privacy</a>
+            <a href="policies.html" class="footer-link">Terms</a>
+          </div>
         </div>
+      </div>
     </footer>
 
     <script src="script.js"></script>
     <script src="booking.js"></script>
-</body>
+  </body>
 </html>

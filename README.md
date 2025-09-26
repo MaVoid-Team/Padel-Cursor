@@ -1,10 +1,10 @@
-# Padel Social Website
+# Padel Social Court Booking System
 
-A complete replica of the Padel Social website built with HTML, CSS, and JavaScript. This project includes all the pages and features from the original website, plus a custom court booking system.
+A comprehensive court booking system for padel tennis facilities, featuring PostgreSQL database persistence, admin dashboard, and responsive design. **Migrated from localStorage to PostgreSQL database for production-ready data persistence.**
 
 ## 🏆 Features
 
-### Pages
+### Core Pages
 - **Homepage** - Hero section with call-to-action and feature highlights
 - **Pricing** - Membership plans with detailed features and FAQ
 - **Events** - Upcoming tournaments and social events
@@ -12,20 +12,22 @@ A complete replica of the Padel Social website built with HTML, CSS, and JavaScr
 - **Padel Basics** - Rules, equipment, and getting started guide
 - **Contact** - Contact form and location information
 - **Policies** - Terms of service, privacy policy, and facility rules
-- **Court Booking** - Custom booking system (built from scratch)
-- **Admin Dashboard** - Complete booking management system
+- **Court Booking** - Full-featured booking system with PostgreSQL backend
+- **Admin Dashboard** - Complete booking management with JWT authentication
 
 ### Key Features
-- ✅ Responsive design for all devices
-- ✅ Mobile-optimized navigation with hamburger menu
-- ✅ Interactive court booking system
-- ✅ Admin dashboard for booking management
-- ✅ Form validation and user feedback
-- ✅ Modern, clean design matching the original
-- ✅ Mobile booking access via sidebar menu
-- ✅ Booking button accessible on all mobile pages
-- ✅ Color palette: Midnight Green, Citrine, Dun, White
-- ✅ Professional typography and spacing
+- ✅ **PostgreSQL Database**: Persistent data storage with full ACID compliance
+- ✅ **RESTful API**: Node.js/Express backend with comprehensive endpoints
+- ✅ **JWT Authentication**: Secure admin authentication and authorization
+- ✅ **Docker Support**: Complete containerization with PostgreSQL, Node.js, and Nginx
+- ✅ **Responsive design** for all devices
+- ✅ **Mobile-optimized** navigation with hamburger menu
+- ✅ **Interactive court booking** system with real-time availability
+- ✅ **Admin dashboard** for comprehensive booking management
+- ✅ **Form validation** and user feedback
+- ✅ **Modern, clean design** matching the original
+- ✅ **API-driven architecture** replacing localStorage
+- ✅ **Production-ready** with proper error handling and logging
 
 ## 🎨 Design System
 
@@ -94,11 +96,91 @@ The website is fully responsive with breakpoints at:
 
 ## 🛠️ Technical Stack
 
+### Frontend
 - **HTML5** - Semantic markup
 - **CSS3** - Modern styling with CSS Grid and Flexbox
-- **JavaScript (ES6+)** - Interactive functionality
+- **JavaScript (ES6+)** - Interactive functionality with Fetch API
 - **Google Fonts** - Typography
-- **No Dependencies** - Pure vanilla JavaScript
+- **Vanilla JavaScript** - No framework dependencies
+
+### Backend
+- **Node.js** - Runtime environment
+- **Express.js** - Web application framework
+- **PostgreSQL** - Primary database
+- **JWT** - Authentication tokens
+- **bcryptjs** - Password hashing
+- **CORS** - Cross-origin resource sharing
+
+### Infrastructure
+- **Docker** - Containerization
+- **Docker Compose** - Multi-container orchestration
+- **Nginx** - Reverse proxy and static file serving
+- **PostgreSQL 15** - Database with Alpine Linux
+
+## 🚀 Quick Start with Docker
+
+1. **Prerequisites**: Install Docker and Docker Compose
+
+2. **Clone and Start**:
+   ```bash
+   git clone <repository-url>
+   cd Padel-Cursor
+   docker-compose up -d
+   ```
+
+3. **Access Application**:
+   - Frontend: http://localhost:8418
+   - API: http://localhost:3000/api
+   - Admin: http://localhost:8418/admin (admin/admin123)
+
+4. **Database Setup**: Automatic via Docker with sample data
+
+## 📊 PostgreSQL Database Schema
+
+```sql
+CREATE TABLE bookings (
+    id SERIAL PRIMARY KEY,
+    court_id INTEGER NOT NULL CHECK (court_id IN (1, 2, 3)),
+    date DATE NOT NULL,
+    time TIME NOT NULL,
+    duration INTEGER NOT NULL CHECK (duration IN (60, 90, 120)),
+    player_name VARCHAR(255) NOT NULL,
+    player_email VARCHAR(255) NOT NULL,
+    player_phone VARCHAR(50),
+    player_level VARCHAR(50) CHECK (player_level IN ('Beginner', 'Intermediate', 'Advanced')),
+    additional_players INTEGER DEFAULT 0,
+    special_requests TEXT,
+    price DECIMAL(10, 2) NOT NULL,
+    status VARCHAR(20) DEFAULT 'confirmed',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+## 🔐 API Endpoints
+
+### Public Endpoints
+- `GET /api/health` - Health check
+- `GET /api/bookings/:date` - Get bookings for specific date
+- `POST /api/bookings` - Create new booking
+
+### Admin Endpoints (JWT Required)
+- `POST /api/admin/login` - Authentication
+- `GET /api/admin/bookings` - Get all bookings
+- `GET /api/admin/stats` - Booking statistics
+- `PUT /api/admin/bookings/:id/cancel` - Cancel booking
+- `DELETE /api/admin/bookings/demo` - Clear demo data
+
+## 🔄 Migration from localStorage
+
+**Key Improvements:**
+- ✅ **Data Persistence**: PostgreSQL ensures data survives browser/server restarts
+- ✅ **Concurrent Users**: Multiple users can book simultaneously
+- ✅ **Data Integrity**: ACID compliance prevents booking conflicts
+- ✅ **Scalability**: Handles thousands of bookings efficiently
+- ✅ **Backup & Recovery**: Professional database management
+- ✅ **Analytics**: Complex queries for business insights
+- ✅ **Security**: JWT authentication and input validation
 
 ## 📁 File Structure
 

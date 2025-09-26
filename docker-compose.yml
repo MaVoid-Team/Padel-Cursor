@@ -1,16 +1,65 @@
 services:
-  padel-website:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:17-alpine
+    container_name: padel-postgres
+    environment:
+      POSTGRES_DB: padel_booking
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - padel-network
+
+  # Node.js Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: padel-backend
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: padel_booking
+      DB_USER: postgres
+      DB_PASSWORD: password
+      JWT_SECRET: your-super-secret-jwt-key-change-this-in-production
+      NODE_ENV: production
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - padel-network
+
+  # Frontend (Nginx serving static files + proxying API)
+  frontend:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: padel-website
-    restart: unless-stopped
-    
-    # Port mapping 
+    container_name: padel-frontend
     ports:
       - "8418:80"
+    depends_on:
+      - backend
+    networks:
+      - padel-network
+
+volumes:
+  postgres_data:
 
 networks:
-  default:
-    name: padel-network
+  padel-network:
     driver: bridge
