@@ -6,16 +6,42 @@ require('dotenv').config();
 const { pool } = require('./config/database');
 const bookingRoutes = require('./routes/bookings');
 const adminRoutes = require('./routes/admin');
+const { setupDatabase } = require('../scripts/setup-database');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Initialize database on startup
+async function initializeDatabase() {
+  const maxRetries = 5;
+  const retryDelay = 3000; // 3 seconds
+  
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      console.log(`🚀 Initializing database (attempt ${attempt}/${maxRetries})...`);
+      await setupDatabase();
+      console.log('✅ Database initialization completed');
+      return;
+    } catch (error) {
+      console.error(`❌ Database initialization failed (attempt ${attempt}/${maxRetries}):`, error.message);
+      
+      if (attempt === maxRetries) {
+        console.error('⚠️  All database initialization attempts failed. Server will continue but database operations may fail');
+        return;
+      }
+      
+      console.log(`⏳ Retrying in ${retryDelay/1000} seconds...`);
+      await new Promise(resolve => setTimeout(resolve, retryDelay));
+    }
+  }
+}
+
 // Test database connection
 pool.connect((err, client, release) => {
   if (err) {
-    console.error('Error connecting to database:', err);
+    console.error('❌ Error connecting to database:', err);
   } else {
-    console.log('Connected to PostgreSQL database');
+    console.log('✅ Connected to PostgreSQL database');
     release();
   }
 });
@@ -47,11 +73,23 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/../index.html');
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log(`Frontend available at http://localhost:${PORT}`);
-  console.log(`API available at http://localhost:${PORT}/api`);
+// Start server with database initialization
+async function startServer() {
+  // Initialize database first
+  await initializeDatabase();
+  
+  // Start the server
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🌐 Frontend available at http://localhost:${PORT}`);
+    console.log(`🔌 API available at http://localhost:${PORT}/api`);
+  });
+}
+
+// Start the application
+startServer().catch(error => {
+  console.error('❌ Failed to start server:', error.message);
+  process.exit(1);
 });
 
 module.exports = app;

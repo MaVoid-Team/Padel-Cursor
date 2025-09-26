@@ -1,40 +1,52 @@
 const { Pool } = require('pg');
 require('dotenv').config();
 
-const pool = new Pool({
-  user: process.env.DB_USER || 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  database: 'postgres', // Connect to default database first
-  password: process.env.DB_PASSWORD || 'password',
-  port: process.env.DB_PORT || 5432,
-});
-
 async function setupDatabase() {
+  const dbName = process.env.DB_NAME || 'padel_booking';
+  
+  // First, connect to the default postgres database to create our database if needed
+  const adminPool = new Pool({
+    user: process.env.DB_USER || 'postgres',
+    host: process.env.DB_HOST || 'localhost',
+    database: 'postgres', // Connect to default database first
+    password: process.env.DB_PASSWORD || 'password',
+    port: process.env.DB_PORT || 5432,
+  });
+
   try {
-    console.log('Setting up database...');
+    console.log('🔧 Setting up database...');
     
     // Create database if it doesn't exist
-    const dbName = process.env.DB_NAME || 'padel_booking';
-    
     try {
-      await pool.query(`CREATE DATABASE ${dbName}`);
-      console.log(`Database ${dbName} created successfully`);
+      await adminPool.query(`CREATE DATABASE ${dbName}`);
+      console.log(`✅ Database ${dbName} created successfully`);
     } catch (error) {
       if (error.code === '42P04') {
-        console.log(`Database ${dbName} already exists`);
+        console.log(`ℹ️  Database ${dbName} already exists`);
       } else {
+        console.error('❌ Error creating database:', error.message);
         throw error;
       }
     }
     
-    // Connect to the new database
-    const dbPool = new Pool({
-      user: process.env.DB_USER || 'postgres',
-      host: process.env.DB_HOST || 'localhost',
-      database: dbName,
-      password: process.env.DB_PASSWORD || 'password',
-      port: process.env.DB_PORT || 5432,
-    });
+    await adminPool.end();
+  } catch (error) {
+    console.error('❌ Error during database creation:', error.message);
+    await adminPool.end();
+    throw error;
+  }
+    
+  // Now connect to our specific database to create tables
+  const dbPool = new Pool({
+    user: process.env.DB_USER || 'postgres',
+    host: process.env.DB_HOST || 'localhost',
+    database: dbName,
+    password: process.env.DB_PASSWORD || 'password',
+    port: process.env.DB_PORT || 5432,
+  });
+
+  try {
+    console.log('🔧 Creating database tables...');
     
     // Create tables
     await dbPool.query(`
@@ -90,27 +102,26 @@ async function setupDatabase() {
         EXECUTE FUNCTION update_updated_at_column();
     `);
     
-    console.log('Database tables created successfully');
+    console.log('✅ Database tables created successfully');
     
     // Check if we should insert sample data
     const countResult = await dbPool.query('SELECT COUNT(*) FROM bookings');
     const bookingCount = parseInt(countResult.rows[0].count);
     
     if (bookingCount === 0) {
-      console.log('Inserting sample data...');
+      console.log('🔧 Inserting sample data...');
       await insertSampleData(dbPool);
     } else {
-      console.log(`Database already contains ${bookingCount} bookings`);
+      console.log(`ℹ️  Database already contains ${bookingCount} bookings`);
     }
     
     await dbPool.end();
-    await pool.end();
-    
-    console.log('Database setup completed successfully!');
+    console.log('✅ Database setup completed successfully!');
     
   } catch (error) {
-    console.error('Error setting up database:', error);
-    process.exit(1);
+    console.error('❌ Error setting up database tables:', error.message);
+    await dbPool.end();
+    throw error;
   }
 }
 
@@ -173,12 +184,15 @@ async function insertSampleData(dbPool) {
     }
   }
   
-  console.log(`Inserted ${sampleBookings.length} sample bookings`);
+  console.log(`✅ Inserted ${sampleBookings.length} sample bookings`);
 }
 
 // Run the setup
 if (require.main === module) {
-  setupDatabase();
+  setupDatabase().catch(error => {
+    console.error('❌ Database setup failed:', error.message);
+    process.exit(1);
+  });
 }
 
 module.exports = { setupDatabase };
