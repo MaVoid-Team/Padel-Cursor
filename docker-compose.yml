@@ -34,7 +34,7 @@ services:
       JWT_SECRET: df48245c5ba1acf566b095282861129a
       NODE_ENV: production
     ports:
-      - "3000:3000"
+      - "3581:3000"
     depends_on:
       postgres:
         condition: service_healthy
