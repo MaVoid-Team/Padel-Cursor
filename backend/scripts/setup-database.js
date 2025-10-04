@@ -53,16 +53,6 @@ async function setupDatabase() {
     await sequelize.sync({ alter: false });
     console.log('✅ Database schema verified successfully');
     
-    // Check if we should insert sample data
-    const bookingCount = await Booking.count();
-    
-    if (bookingCount === 0) {
-      console.log('🔧 Inserting sample data...');
-      await insertSampleData();
-    } else {
-      console.log(`ℹ️  Database already contains ${bookingCount} bookings`);
-    }
-    
     console.log('✅ Database setup completed successfully!');
     console.log('💡 Tip: Use migrations for production: npm run db:migrate');
     
