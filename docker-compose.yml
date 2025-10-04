@@ -45,9 +45,10 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
+    # Volumes commented out for production
+    # volumes:
+    #   - ./backend:/app
+    #   - /app/node_modules
     networks:
       - padel-network
 
