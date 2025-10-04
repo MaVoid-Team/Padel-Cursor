@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+const { sequelize, Booking } = require('../src/models');
 require('dotenv').config();
 
 async function setupDatabase() {
@@ -35,97 +36,43 @@ async function setupDatabase() {
     await adminPool.end();
     throw error;
   }
-    
-  // Now connect to our specific database to create tables
-  const dbPool = new Pool({
-    user: process.env.DB_USER || 'postgres',
-    host: process.env.DB_HOST || 'localhost',
-    database: dbName,
-    password: process.env.DB_PASSWORD || 'password',
-    port: process.env.DB_PORT || 5432,
-  });
 
   try {
-    console.log('🔧 Creating database tables...');
+    console.log('🔧 Testing database connection...');
     
-    // Create tables
-    await dbPool.query(`
-      CREATE TABLE IF NOT EXISTS bookings (
-        id SERIAL PRIMARY KEY,
-        court_id INTEGER NOT NULL CHECK (court_id IN (1, 2, 3)),
-        date DATE NOT NULL,
-        time TIME NOT NULL,
-        duration INTEGER NOT NULL CHECK (duration IN (60, 90, 120)),
-        player_name VARCHAR(255) NOT NULL,
-        player_email VARCHAR(255) NOT NULL,
-        player_phone VARCHAR(50),
-        player_level VARCHAR(50) CHECK (player_level IN ('Beginner', 'Intermediate', 'Advanced')),
-        additional_players INTEGER DEFAULT 0 CHECK (additional_players >= 0 AND additional_players <= 3),
-        special_requests TEXT,
-        price DECIMAL(10, 2) NOT NULL,
-        status VARCHAR(20) DEFAULT 'confirmed' CHECK (status IN ('confirmed', 'cancelled', 'completed')),
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        UNIQUE(court_id, date, time, status) DEFERRABLE INITIALLY DEFERRED
-      )
-    `);
+    // Test connection to Sequelize
+    await sequelize.authenticate();
+    console.log('✅ Database connection established successfully');
     
-    // Create indexes for better performance
-    await dbPool.query(`
-      CREATE INDEX IF NOT EXISTS idx_bookings_date ON bookings(date);
-    `);
+    console.log('🔧 Running database migrations...');
+    console.log('ℹ️  To run migrations manually, use: npm run db:migrate');
+    console.log('ℹ️  This script will use sync for backward compatibility');
     
-    await dbPool.query(`
-      CREATE INDEX IF NOT EXISTS idx_bookings_court_date ON bookings(court_id, date);
-    `);
-    
-    await dbPool.query(`
-      CREATE INDEX IF NOT EXISTS idx_bookings_status ON bookings(status);
-    `);
-    
-    // Create a trigger to update the updated_at column
-    await dbPool.query(`
-      CREATE OR REPLACE FUNCTION update_updated_at_column()
-      RETURNS TRIGGER AS $$
-      BEGIN
-        NEW.updated_at = CURRENT_TIMESTAMP;
-        RETURN NEW;
-      END;
-      $$ language 'plpgsql';
-    `);
-    
-    await dbPool.query(`
-      DROP TRIGGER IF EXISTS update_bookings_updated_at ON bookings;
-      CREATE TRIGGER update_bookings_updated_at
-        BEFORE UPDATE ON bookings
-        FOR EACH ROW
-        EXECUTE FUNCTION update_updated_at_column();
-    `);
-    
-    console.log('✅ Database tables created successfully');
+    // For now, still use sync but recommend migrations
+    // In production, you should use migrations instead
+    await sequelize.sync({ alter: false });
+    console.log('✅ Database schema verified successfully');
     
     // Check if we should insert sample data
-    const countResult = await dbPool.query('SELECT COUNT(*) FROM bookings');
-    const bookingCount = parseInt(countResult.rows[0].count);
+    const bookingCount = await Booking.count();
     
     if (bookingCount === 0) {
       console.log('🔧 Inserting sample data...');
-      await insertSampleData(dbPool);
+      await insertSampleData();
     } else {
       console.log(`ℹ️  Database already contains ${bookingCount} bookings`);
     }
     
-    await dbPool.end();
     console.log('✅ Database setup completed successfully!');
+    console.log('💡 Tip: Use migrations for production: npm run db:migrate');
     
   } catch (error) {
-    console.error('❌ Error setting up database tables:', error.message);
-    await dbPool.end();
+    console.error('❌ Error setting up database:', error.message);
     throw error;
   }
 }
 
-async function insertSampleData(dbPool) {
+async function insertSampleData() {
   const sampleBookings = [];
   const today = new Date();
   
@@ -149,37 +96,31 @@ async function insertSampleData(dbPool) {
       };
       const price = pricing[duration][Math.floor(Math.random() * 2)];
       
-      sampleBookings.push([
-        courtId,
-        date.toISOString().split('T')[0],
-        timeSlot,
-        duration,
-        `Sample Player ${i + 1}`,
-        `player${i + 1}@example.com`,
-        `555-010${i.toString().padStart(2, '0')}`,
-        ['Beginner', 'Intermediate', 'Advanced'][Math.floor(Math.random() * 3)],
-        Math.floor(Math.random() * 3),
-        Math.random() > 0.8 ? 'Special requests here' : null,
-        price,
-        'confirmed'
-      ]);
+      sampleBookings.push({
+        court_id: courtId,
+        date: date.toISOString().split('T')[0],
+        time: timeSlot,
+        duration: duration,
+        player_name: `Sample Player ${i + 1}`,
+        player_email: `player${i + 1}@example.com`,
+        player_phone: `555-010${i.toString().padStart(2, '0')}`,
+        player_level: ['Beginner', 'Intermediate', 'Advanced'][Math.floor(Math.random() * 3)],
+        additional_players: Math.floor(Math.random() * 3),
+        special_requests: Math.random() > 0.8 ? 'Special requests here' : null,
+        price: price,
+        status: 'confirmed'
+      });
     }
   }
   
-  // Insert sample bookings
-  for (const booking of sampleBookings) {
+  // Insert sample bookings using Sequelize
+  for (const bookingData of sampleBookings) {
     try {
-      await dbPool.query(`
-        INSERT INTO bookings (
-          court_id, date, time, duration, player_name, player_email,
-          player_phone, player_level, additional_players, special_requests,
-          price, status
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-      `, booking);
+      await Booking.create(bookingData);
     } catch (error) {
-      // Skip duplicates
-      if (error.code !== '23505') {
-        console.error('Error inserting sample booking:', error);
+      // Skip duplicates and other validation errors
+      if (error.name !== 'SequelizeUniqueConstraintError') {
+        console.error('Error inserting sample booking:', error.message);
       }
     }
   }

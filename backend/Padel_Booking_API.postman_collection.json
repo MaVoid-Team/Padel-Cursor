@@ -1,0 +1,935 @@
+{
+	"info": {
+		"_postman_id": "padel-booking-api-2024",
+		"name": "Padel Booking System API - Phase 2",
+		"description": "Complete API collection for Padel Court Booking System with PostgreSQL backend.\n\nBase URL: http://localhost:3000\n\nFeatures:\n- Public booking endpoints with duration-aware conflict detection\n- Dynamic court management with pricing\n- Payment integration (Paymob + Manual)\n- Admin authentication with JWT\n- Full CRUD operations for bookings, courts, and payments\n- Statistics and analytics\n\nDefault Admin Credentials:\n- Username: admin\n- Password: admin123\n\nDate Format: YYYY-MM-DD (e.g., 2024-10-05)\nTime Format: HH:MM 24-hour (e.g., 14:30)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health & Status",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"health"
+							]
+						},
+						"description": "Check if the API is running and healthy"
+					},
+					"response": []
+				}
+			],
+			"description": "Health check and status endpoints"
+		},
+		{
+			"name": "Public - Bookings",
+			"item": [
+				{
+					"name": "Get Bookings for Date",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/bookings/{{testDate}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								"{{testDate}}"
+							]
+						},
+						"description": "Get all confirmed bookings for a specific date.\n\nDate format: YYYY-MM-DD\n\nReturns: court_id, time, duration for each confirmed booking"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    if (response.booking && response.booking.id) {",
+									"        pm.environment.set('lastBookingId', response.booking.id);",
+									"        pm.test('Booking created successfully', function() {",
+									"            pm.expect(response.success).to.be.true;",
+									"        });",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"court_id\": 1,\n  \"date\": \"{{testDate}}\",\n  \"time\": \"14:00\",\n  \"duration\": 60,\n  \"player_name\": \"John Doe\",\n  \"player_email\": \"john.doe@example.com\",\n  \"player_phone\": \"555-0123\",\n  \"player_level\": \"Intermediate\",\n  \"additional_players\": 1,\n  \"special_requests\": \"Please prepare the court 10 minutes early\",\n  \"price\": 25.00\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/bookings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"bookings"
+							]
+						},
+						"description": "Create a new court booking with duration-aware conflict detection.\n\nRequired fields:\n- court_id (1-3)\n- date (YYYY-MM-DD format)\n- time (HH:MM 24-hour format)\n- duration (60, 90, or 120 minutes)\n- player_name\n- player_email\n\nOptional fields:\n- player_phone\n- player_level (Beginner, Intermediate, Advanced)\n- additional_players (0-3)\n- special_requests\n- price\n\nConflict Detection:\n- Checks for overlapping bookings considering duration\n- Returns 409 error if time slot conflicts with existing booking"
+					},
+					"response": []
+				}
+			],
+			"description": "Public endpoints for viewing and creating bookings"
+		},
+		{
+			"name": "Admin - Authentication",
+			"item": [
+				{
+					"name": "Admin Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.token) {",
+									"        pm.environment.set('adminToken', response.token);",
+									"        pm.test('Login successful', function() {",
+									"            pm.expect(response.success).to.be.true;",
+									"        });",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"login"
+							]
+						},
+						"description": "Authenticate as admin user.\n\nDefault credentials:\n- Username: admin\n- Password: admin123\n\nReturns JWT token valid for 24 hours.\n\nToken is automatically saved to {{adminToken}} variable."
+					},
+					"response": []
+				}
+			],
+			"description": "Admin authentication endpoints"
+		},
+		{
+			"name": "Admin - Bookings",
+			"item": [
+				{
+					"name": "Get All Bookings",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/bookings",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"bookings"
+							]
+						},
+						"description": "Get all bookings (admin only).\n\nRequires: Bearer token in Authorization header\n\nReturns: All bookings ordered by creation date (newest first)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"date\": \"{{testDate}}\",\n  \"time\": \"16:00\",\n  \"duration\": 90,\n  \"price\": 35.00,\n  \"status\": \"confirmed\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/bookings/{{lastBookingId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"bookings",
+								"{{lastBookingId}}"
+							]
+						},
+						"description": "Update any booking field (admin only).\n\nSupports partial updates - only send fields you want to change.\n\nUpdatable fields:\n- court_id\n- date (YYYY-MM-DD)\n- time (HH:MM)\n- duration (60, 90, or 120)\n- player_name\n- player_email\n- player_phone\n- player_level\n- additional_players\n- special_requests\n- price\n- status\n\nFeatures:\n- Validates date/time formats\n- Checks for conflicts if time/date/court changes\n- Excludes current booking from conflict detection"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Booking",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/bookings/{{lastBookingId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"bookings",
+								"{{lastBookingId}}"
+							]
+						},
+						"description": "Permanently delete a booking by ID (admin only).\n\nReturns deleted booking info before removal."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Statistics",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/stats",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"stats"
+							]
+						},
+						"description": "Get booking statistics (admin only).\n\nReturns:\n- Total bookings (excluding cancelled)\n- Today's bookings\n- Today's revenue\n- Active courts count"
+					},
+					"response": []
+				}
+			],
+			"description": "Admin endpoints for managing bookings (CRUD operations)"
+		},
+		{
+			"name": "Admin - Data Management",
+			"item": [
+				{
+					"name": "Generate Sample Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/generate-sample-data",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"generate-sample-data"
+							]
+						},
+						"description": "Generate sample bookings for the next 30 days (admin only).\n\nUseful for testing and demo purposes."
+					},
+					"response": []
+				},
+				{
+					"name": "Clear Demo Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/admin/bookings/demo",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"bookings",
+								"demo"
+							]
+						},
+						"description": "⚠️ WARNING: Deletes ALL bookings from the database (admin only).\n\nUse with caution!"
+					},
+					"response": []
+				}
+			],
+			"description": "Admin endpoints for managing demo/test data"
+		},
+		{
+			"name": "Public - Courts",
+			"item": [
+				{
+					"name": "Get All Courts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courts?active_only=true",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courts"
+							],
+							"query": [
+								{
+									"key": "active_only",
+									"value": "true",
+									"description": "Filter for active courts only"
+								}
+							]
+						},
+						"description": "Get all courts.\n\nQuery Parameters:\n- active_only (optional): boolean - Return only active courts"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Court",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courts/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courts",
+								"1"
+							]
+						},
+						"description": "Get court details by ID.\n\nReturns: Full court information including pricing and operating hours"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Court Availability",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courts/1/availability?date={{testDate}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courts",
+								"1",
+								"availability"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "{{testDate}}",
+									"description": "Date in YYYY-MM-DD format"
+								}
+							]
+						},
+						"description": "Get court availability for a specific date.\n\nReturns: All confirmed bookings for the court on the specified date"
+					},
+					"response": []
+				}
+			],
+			"description": "Public endpoints for viewing courts"
+		},
+		{
+			"name": "Admin - Courts",
+			"item": [
+				{
+					"name": "Create Court",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201) {",
+									"    const response = pm.response.json();",
+									"    if (response.court && response.court.id) {",
+									"        pm.environment.set('lastCourtId', response.court.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Court 4 - Premium\",\n  \"description\": \"Indoor court with air conditioning\",\n  \"hourly_price_member\": 30.00,\n  \"hourly_price_non_member\": 45.00,\n  \"is_active\": true,\n  \"operating_hours\": {\n    \"monday\": { \"slots\": [\"08:00-20:00\"], \"closed\": false },\n    \"tuesday\": { \"slots\": [\"08:00-20:00\"], \"closed\": false },\n    \"wednesday\": { \"slots\": [\"08:00-20:00\"], \"closed\": false },\n    \"thursday\": { \"slots\": [\"08:00-20:00\"], \"closed\": false },\n    \"friday\": { \"slots\": [\"08:00-20:00\"], \"closed\": false },\n    \"saturday\": { \"slots\": [\"10:00-22:00\"], \"closed\": false },\n    \"sunday\": { \"slots\": [\"10:00-22:00\"], \"closed\": false }\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courts"
+							]
+						},
+						"description": "Create a new court (admin only).\n\nRequired fields:\n- name (unique)\n- hourly_price_member\n- hourly_price_non_member\n\nOptional fields:\n- description\n- is_active (default: true)\n- operating_hours (JSONB)"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Court",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Court 4 - Premium Plus\",\n  \"hourly_price_member\": 35.00,\n  \"hourly_price_non_member\": 50.00\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/courts/{{lastCourtId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courts",
+								"{{lastCourtId}}"
+							]
+						},
+						"description": "Update court details (admin only).\n\nSupports partial updates - only send fields you want to change.\n\nValidation:\n- Name uniqueness check (if changing name)\n- Pricing must be >= 0"
+					},
+					"response": []
+				},
+				{
+					"name": "Toggle Court Status",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courts/{{lastCourtId}}/toggle-status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courts",
+								"{{lastCourtId}}",
+								"toggle-status"
+							]
+						},
+						"description": "Toggle court active/inactive status (admin only).\n\nToggles is_active between true and false."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Court",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/courts/{{lastCourtId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"courts",
+								"{{lastCourtId}}"
+							]
+						},
+						"description": "Delete a court (admin only).\n\n⚠️ Prevention: Cannot delete court with future bookings.\nSuggestion: Deactivate instead if bookings exist."
+					},
+					"response": []
+				}
+			],
+			"description": "Admin endpoints for managing courts (CRUD operations)"
+		},
+		{
+			"name": "Public - Payments",
+			"item": [
+				{
+					"name": "Initiate Payment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    if (response.payment_id) {",
+									"        pm.environment.set('lastPaymentId', response.payment_id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"booking_id\": 1,\n  \"billing_data\": {\n    \"first_name\": \"John\",\n    \"last_name\": \"Doe\",\n    \"email\": \"john@example.com\",\n    \"phone_number\": \"01012345678\",\n    \"city\": \"Cairo\",\n    \"country\": \"EG\"\n  }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/payments/initiate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"payments",
+								"initiate"
+							]
+						},
+						"description": "Initiate Paymob payment for a booking.\n\nRequired:\n- booking_id\n- billing_data (first_name, last_name, email, phone_number)\n\nReturns:\n- payment_url (Paymob iframe URL)\n- payment_id\n\nNote: Requires Paymob configuration in .env"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payment by Booking",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/payments/booking/{{lastBookingId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"payments",
+								"booking",
+								"{{lastBookingId}}"
+							]
+						},
+						"description": "Get payment details for a specific booking.\n\nReturns: Payment information including status, method, and amount"
+					},
+					"response": []
+				}
+			],
+			"description": "Public endpoints for payment processing"
+		},
+		{
+			"name": "Admin - Payments",
+			"item": [
+				{
+					"name": "Get All Payments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/payments?status=completed&payment_method=paymob",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"payments"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "completed",
+									"description": "Filter by status (pending, completed, failed, refunded, cancelled)"
+								},
+								{
+									"key": "payment_method",
+									"value": "paymob",
+									"description": "Filter by payment method (paymob, cash, card, bank_transfer)"
+								}
+							]
+						},
+						"description": "Get all payments with optional filters (admin only).\n\nFilters:\n- status: pending, completed, failed, refunded, cancelled\n- payment_method: paymob, cash, card, bank_transfer"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Payment Statistics",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/payments/statistics?date_from=2024-10-01&date_to=2024-10-31",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"payments",
+								"statistics"
+							],
+							"query": [
+								{
+									"key": "date_from",
+									"value": "2024-10-01",
+									"description": "Start date (YYYY-MM-DD)"
+								},
+								{
+									"key": "date_to",
+									"value": "2024-10-31",
+									"description": "End date (YYYY-MM-DD)"
+								}
+							]
+						},
+						"description": "Get payment statistics (admin only).\n\nOptional filters:\n- date_from: Start date\n- date_to: End date\n\nReturns:\n- Total revenue\n- Total refunded\n- Net revenue\n- Breakdown by status\n- Breakdown by payment method"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/payments/{{lastPaymentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"payments",
+								"{{lastPaymentId}}"
+							]
+						},
+						"description": "Get detailed payment information by ID (admin only)."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Manual Payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"booking_id\": 1,\n  \"payment_method\": \"cash\",\n  \"amount\": 45.00,\n  \"notes\": \"Paid in cash at reception\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/payments/manual",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"payments",
+								"manual"
+							]
+						},
+						"description": "Record manual payment (admin only).\n\nRequired:\n- booking_id\n- payment_method (cash, card, bank_transfer)\n- amount\n\nOptional:\n- notes\n\nAutomatically:\n- Marks payment as completed\n- Updates booking status to confirmed\n- Updates booking payment_status to paid"
+					},
+					"response": []
+				},
+				{
+					"name": "Refund Payment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{adminToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"refund_amount\": 45.00,\n  \"reason\": \"Customer request - Court unavailable\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/payments/{{lastPaymentId}}/refund",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"payments",
+								"{{lastPaymentId}}",
+								"refund"
+							]
+						},
+						"description": "Refund a payment (admin only).\n\nRequired:\n- refund_amount (must be <= original amount)\n- reason\n\nAutomatically:\n- Updates payment status to refunded\n- Updates booking status to cancelled\n- Updates booking payment_status to refunded\n- Records refund date"
+					},
+					"response": []
+				}
+			],
+			"description": "Admin endpoints for managing payments"
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Set test date to tomorrow",
+					"const tomorrow = new Date();",
+					"tomorrow.setDate(tomorrow.getDate() + 1);",
+					"const testDate = tomorrow.toISOString().split('T')[0];",
+					"pm.environment.set('testDate', testDate);"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Global test to check response time",
+					"pm.test('Response time is less than 2000ms', function() {",
+					"    pm.expect(pm.response.responseTime).to.be.below(2000);",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "adminToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "lastBookingId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "lastCourtId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "lastPaymentId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "testDate",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
