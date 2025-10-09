@@ -106,7 +106,9 @@ The website is fully responsive with breakpoints at:
 ### Backend
 - **Node.js** - Runtime environment
 - **Express.js** - Web application framework
-- **PostgreSQL** - Primary database
+- **PostgreSQL** - Primary database with Sequelize ORM
+- **Sequelize** - ORM with migration support
+- **Sequelize CLI** - Database migration management
 - **JWT** - Authentication tokens
 - **bcryptjs** - Password hashing
 - **CORS** - Cross-origin resource sharing
@@ -137,6 +139,23 @@ The website is fully responsive with breakpoints at:
 
 ## 📊 PostgreSQL Database Schema
 
+The database schema is managed using **Sequelize Migrations** for version-controlled, reproducible database changes.
+
+### Quick Start with Migrations
+
+```bash
+# Run all migrations (recommended)
+npm run db:migrate
+
+# Check migration status
+npm run db:migrate:status
+
+# Add sample data
+npm run db:seed
+```
+
+### Database Schema
+
 ```sql
 CREATE TABLE bookings (
     id SERIAL PRIMARY KEY,
@@ -156,6 +175,8 @@ CREATE TABLE bookings (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 ```
+
+**See:** `backend/MIGRATIONS.md` for complete migration documentation and `backend/MIGRATION_QUICK_REF.md` for quick reference.
 
 ## 🔐 API Endpoints
 

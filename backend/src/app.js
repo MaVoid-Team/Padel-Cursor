@@ -3,9 +3,11 @@ const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
-const { pool } = require('./config/database');
+const { sequelize } = require('./config/database');
 const bookingRoutes = require('./routes/bookings');
 const adminRoutes = require('./routes/admin');
+const courtRoutes = require('./routes/courts');
+const paymentRoutes = require('./routes/payments');
 const { setupDatabase } = require('../scripts/setup-database');
 
 const app = express();
@@ -36,15 +38,15 @@ async function initializeDatabase() {
   }
 }
 
-// Test database connection
-pool.connect((err, client, release) => {
-  if (err) {
-    console.error('❌ Error connecting to database:', err);
-  } else {
-    console.log('✅ Connected to PostgreSQL database');
-    release();
+// Test database connection with Sequelize
+async function testDatabaseConnection() {
+  try {
+    await sequelize.authenticate();
+    console.log('✅ Connected to PostgreSQL database via Sequelize');
+  } catch (error) {
+    console.error('❌ Error connecting to database:', error.message);
   }
-});
+}
 
 // Middleware
 app.use(cors());
@@ -62,6 +64,8 @@ app.use('/api/', limiter);
 // Routes
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/courts', courtRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -75,7 +79,10 @@ app.get('/', (req, res) => {
 
 // Start server with database initialization
 async function startServer() {
-  // Initialize database first
+  // Test database connection first
+  await testDatabaseConnection();
+  
+  // Initialize database
   await initializeDatabase();
   
   // Start the server
