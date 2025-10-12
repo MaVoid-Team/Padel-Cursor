@@ -83,11 +83,6 @@
               <button type="submit" class="btn btn-primary">Login</button>
             </div>
           </form>
-          <div class="admin-demo-note">
-            <p><strong>Demo credentials:</strong></p>
-            <p>Username: admin</p>
-            <p>Password: padel2025</p>
-          </div>
         </div>
       </div>
     </section>
@@ -99,6 +94,13 @@
       style="display: none"
     >
       <div class="container">
+        <!-- Stats Filter -->
+        <div class="stats-filter">
+          <button class="stats-filter-btn active" data-period="today">Today</button>
+          <button class="stats-filter-btn" data-period="thisWeek">This Week</button>
+          <button class="stats-filter-btn" data-period="thisMonth">This Month</button>
+        </div>
+
         <!-- Dashboard Stats -->
         <div class="dashboard-stats">
           <div class="stat-card">
@@ -112,14 +114,14 @@
             <div class="stat-icon">🏸</div>
             <div class="stat-info">
               <div class="stat-number" id="todays-bookings">0</div>
-              <div class="stat-label">Today's Bookings</div>
+              <div class="stat-label" id="period-bookings-label">Today's Bookings</div>
             </div>
           </div>
           <div class="stat-card">
             <div class="stat-icon">💰</div>
             <div class="stat-info">
               <div class="stat-number" id="todays-revenue">$0</div>
-              <div class="stat-label">Today's Revenue</div>
+              <div class="stat-label" id="period-revenue-label">Today's Revenue</div>
             </div>
           </div>
           <div class="stat-card">
@@ -131,8 +133,15 @@
           </div>
         </div>
 
+        <!-- Dashboard Tabs -->
+        <div class="dashboard-tabs">
+          <button class="tab-btn active" data-target="bookings-tab">Bookings</button>
+          <button class="tab-btn" data-target="courts-tab">Courts</button>
+        </div>
+
         <!-- Bookings Management -->
-        <div class="bookings-management">
+        <div class="tab-content active" id="bookings-tab">
+          <div class="bookings-management">
           <h2 class="section-title">Recent Bookings</h2>
 
           <!-- Filter Controls -->
@@ -186,6 +195,38 @@
               </tbody>
             </table>
           </div>
+                  </div>
+        </div>
+
+        <!-- Courts Management -->
+        <div class="tab-content" id="courts-tab">
+          <div class="courts-management">
+          <h2 class="section-title">Courts Management</h2>
+
+          <div class="courts-actions">
+            <label class="filter-label"
+              ><input type="checkbox" id="filter-active-only" /> Show active only</label
+            >
+          </div>
+
+          <div class="courts-table-container">
+            <table class="courts-table" id="courts-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Member Price</th>
+                  <th>Non-Member Price</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="courts-table-body">
+                <!-- Courts populated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+                  </div>
         </div>
 
         <!-- Quick Actions -->
@@ -203,6 +244,8 @@
         </div>
       </div>
     </section>
+
+    <!-- Court Modal removed -->
 
     <!-- Footer -->
     <footer class="footer">

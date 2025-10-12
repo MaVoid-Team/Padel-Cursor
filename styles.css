@@ -920,6 +920,104 @@ body {
     }
 }
 
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+.modal-content {
+  background: var(--midnight-green-2);
+  padding: 30px 40px;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.operating-hours-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+.day-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  color: var(--white);
+  font-size: 14px;
+}
+.day-row input[type="time"] {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: var(--white);
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+.small-label {
+  font-size: 12px;
+}
+/* Admin Dashboard Tabs */
+.dashboard-tabs {
+  margin: 40px 0;
+  display: flex;
+  gap: 20px;
+}
+.tab-btn {
+  background: transparent;
+  border: 2px solid var(--white);
+  color: var(--white);
+  padding: 10px 25px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+.tab-btn.active,
+.tab-btn:hover {
+  background: var(--citrine);
+  color: var(--midnight-green);
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+/* Table clarity */
+.bookings-table,
+.courts-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+.bookings-table th,
+.bookings-table td,
+.courts-table th,
+.courts-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.bookings-table tbody tr:nth-child(odd),
+.courts-table tbody tr:nth-child(odd) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.bookings-table thead,
+.courts-table thead {
+  background-color: var(--midnight-green-2);
+}
+.bookings-table-container,
+.courts-table-container {
+  overflow-x: auto;
+}
 /* Page-specific styles */
 .page-header {
     padding: 120px 0 60px;
@@ -2681,6 +2779,29 @@ body {
 }
 
 /* Admin Dashboard Styles */
+.stats-filter {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.stats-filter-btn {
+    background-color: transparent;
+    border: 2px solid var(--citrine);
+    color: var(--white);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.stats-filter-btn:hover,
+.stats-filter-btn.active {
+    background-color: var(--citrine);
+    color: var(--midnight-green);
+}
+
 .admin-login-container {
     max-width: 400px;
     margin: 0 auto;
